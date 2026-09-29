@@ -1,0 +1,30 @@
+{
+  "name": "registry-backend",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:reset-super": "node scripts/resetSuperadmin.js",
+    "db:seed": "node scripts/createAdmin.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.18.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "socket.io": "^4.8.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4",
+    "prisma": "^5.18.0"
+  }
+}
