@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { prisma } from '../lib/prisma.js';
 import { supabase } from '../config/supabase.js';
 import { env } from '../config/env.js';
-import { requirePerm, requireAuth } from '../middleware/auth.js';
+//import { requirePerm, requireAuth } from '../middleware/auth.js'; /*ของเดิมสำหรับมีการล็อกอินก่อนถึงจะแสดงข้อมูล*/
+import { requirePerm } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import { asyncH, HttpError, normThai, buildSearchText, writeAudit } from '../lib/helpers.js';
 
@@ -26,7 +27,8 @@ async function nextCode(type) {
 }
 
 /* ── อ่าน: ต้องล็อกอินก่อน (ตามระบบประตูที่เพิ่งทำ) ── */
-router.get('/', requireAuth, asyncH(async (req, res) => {
+// router.get('/', requireAuth, asyncH(async (req, res) => {/*ของเดิมสำหรับมีการล็อกอินก่อนถึงจะแสดงข้อมูล*/
+router.get('/', asyncH(async (req, res) => {
   const q = typeof req.query.q === 'string' ? req.query.q.slice(0, 80) : '';
   const type = ['CORE', 'EXTERNAL'].includes(req.query.type) ? req.query.type : undefined;
   const tag = typeof req.query.tag === 'string' && req.query.tag.trim() ? req.query.tag.trim().slice(0, 30) : undefined;
@@ -46,7 +48,8 @@ router.get('/', requireAuth, asyncH(async (req, res) => {
   res.json({ items, total, page, pageSize });
 }));
 
-router.get('/meta', requireAuth, asyncH(async (_req, res) => {
+// router.get('/meta', requireAuth, asyncH(async (_req, res) => {/*ของเดิมสำหรับมีการล็อกอินก่อนถึงจะแสดงข้อมูล*/
+router.get('/meta', asyncH(async (_req, res) => {
   const [total, core, external, rows] = await Promise.all([
     prisma.system.count(),
     prisma.system.count({ where: { type: 'CORE' } }),
